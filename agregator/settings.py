@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -145,7 +147,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-import dj-database-url
 
-db_from_env = dj-database-url.config()
-DATABASE['default'].update(db_from_env)
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
