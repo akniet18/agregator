@@ -66,4 +66,14 @@ class PharmacyApi(APIView):
             return Response({'status': 'ok'})
         else:
              return Response(s.errors)
-    
+
+
+
+class Accounting(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        user = Pharmacy.objects.get(owner=request.user)
+        queryset = CountProduct.objects.filter(pharmacy = user)
+        s = CountProductSer2(queryset, many=True, context={'request': request})
+        return Response(s.data)

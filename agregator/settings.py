@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'users',
     'categories',
     'product',
+    'message',
 
     'corsheaders',
     'rest_framework',

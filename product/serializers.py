@@ -16,8 +16,13 @@ class CountProductSer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ManufSer(serializers.Serializer):
+    name = serializers.CharField()
+
+
 class ProductSer(serializers.ModelSerializer):
     available = CountProductSer(many=True)
+    manufacturer = ManufSer()
     class Meta:
         model = Product
         fields = "__all__"
@@ -34,3 +39,16 @@ class CreateProductSer(serializers.Serializer):
     category = serializers.IntegerField()
 
 
+class ProductSer2(serializers.ModelSerializer):
+    photo = serializers.SerializerMethodField('get_avatar_url', read_only=True)
+    class Meta:
+        model = Product
+        fields = "__all__"
+    def get_avatar_url(self, obj):
+        return self.context['request'].build_absolute_uri(obj.photo.url)
+
+class CountProductSer2(serializers.ModelSerializer):
+    product = ProductSer2()
+    class Meta:
+        model = CountProduct
+        fields = "__all__"
