@@ -8,4 +8,8 @@ def product_photos_dir(instanse, filename):
 class Message(models.Model):
     title = models.CharField(max_length=250)
     text = models.TextField()
-    models.ImageField(upload_to=product_photos_dir, default="default/default.png", null=True, blank=True)
+    photo = models.ImageField(upload_to=product_photos_dir, default="default/default.png", null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+    

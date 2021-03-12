@@ -12,4 +12,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
 
-# class MessageApi(APIView)
+class MessageApi(viewsets.ModelViewSet):
+    permission_classes = [permissions.AllowAny,]
+    queryset = Message.objects.all()
+    serializer_class = MessageSer
+
+
