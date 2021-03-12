@@ -9,6 +9,8 @@ urlpatterns = [
    path('', getProduct.as_view({'get': 'list'})),
    path('create/', createProduct.as_view()),
    path('pharmacy/create/', PharmacyApi.as_view()),
-   path('accounting/', Accounting.as_view())
+   path('accounting/', Accounting.as_view()),
+   path('review/<id>', ReviewApi.as_view()),
+   path('create/review/', CreateReview.as_view())
 ]
 # urlpatterns += router.urls

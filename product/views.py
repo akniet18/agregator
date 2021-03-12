@@ -12,6 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from users.models import User
 from categories.models import Category
+from .models import *
 
 
 class getProduct(viewsets.ModelViewSet):
@@ -77,3 +78,29 @@ class Accounting(APIView):
         queryset = CountProduct.objects.filter(pharmacy = user)
         s = CountProductSer2(queryset, many=True, context={'request': request})
         return Response(s.data)
+
+
+class ReviewApi(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, id):
+        queryset = Review.objects.filter(pharmacy__id = id)
+        s = ReviewSer(queryset, many=True)
+        return Response(s.data)
+
+
+class CreateReview(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        s = CreateReviewSer(data=request.data)
+        if s.is_valid():
+            Review.objects.create(
+                text = s.validated_data['text'],
+                author = request.user,
+                pharmacy = s.validated_data['pharmacy'],
+                rating = s.validated_data['rating']
+            )
+            return Response({'status': 'ok'})
+        else:
+            return Response(s.errors)

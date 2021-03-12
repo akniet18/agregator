@@ -52,3 +52,20 @@ class CountProductSer2(serializers.ModelSerializer):
     class Meta:
         model = CountProduct
         fields = "__all__"
+
+
+class Author(serializers.Serializer):
+    username = serializers.CharField()
+
+
+class ReviewSer(serializers.ModelSerializer):
+    author = Author()
+    class Meta:
+        model = Review
+        fields = "__all__"
+
+class CreateReviewSer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = "__all__"
+        read_only_fields = ('author',)

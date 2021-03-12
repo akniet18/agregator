@@ -13,6 +13,17 @@ class Pharmacy(models.Model):
         return self.name
 
 
+class Review(models.Model):
+    text = models.TextField()
+    rating = models.FloatField(null=True, blank=True)
+    author = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    
+    def __str__(self):
+        return self.pharmacy.name
+
+
 class Manufacture(models.Model):
     name = models.CharField(max_length=150)
 
