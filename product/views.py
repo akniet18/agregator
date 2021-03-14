@@ -62,7 +62,8 @@ class PharmacyApi(APIView):
                 address = s.validated_data['address'],
                 working_hours = s.validated_data['working_hours'],
                 city = s.validated_data['city'],
-                phone = s.validated_data['phone']
+                phone = s.validated_data['phone'],
+                photo = s.validated_data['photo']
             )
             return Response({'status': 'ok'})
         else:
@@ -104,3 +105,14 @@ class CreateReview(APIView):
             return Response({'status': 'ok'})
         else:
             return Response(s.errors)
+
+
+class Recomendation(APIView):
+    permission_classes = [permissions.AllowAny,]
+    
+    def get(self, request):
+        queryset = Product.objects.all()
+        queryset = list(queryset)
+        random.shuffle(queryset)
+        s = ProductSer(queryset, many=True, context={'request': request})
+        return Response(s.data)

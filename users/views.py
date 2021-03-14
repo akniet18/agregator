@@ -67,3 +67,23 @@ class UserList(viewsets.ModelViewSet):
 
 
 
+class changePassword(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        s = LoginSer(data=request.data)
+        if s.is_valid():
+            username = s.validated_data['username']
+            pwd = s.validated_data['password']
+            user = User.objects.get(username=username)
+            if user.exists():
+                user = user[0]
+                user.set_password(pwd)
+                user.save()
+                return Response({'status':'ok'})
+            else:
+                return Response({'status': 'not found'})
+        else:
+            return Response(s.errors)
+
+            

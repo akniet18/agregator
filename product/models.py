@@ -1,12 +1,18 @@
 from django.db import models
 
 
+def pharmacy_photos_dir(instanse, filename):
+    usrnme = f'{instanse.name}'
+    folder_name = f"{usrnme}/{filename}"
+    return folder_name
+
 class Pharmacy(models.Model):
     name = models.CharField(max_length=150)
     address = models.CharField(max_length=255)
     working_hours = models.CharField(max_length=255)
     phone = models.CharField(max_length=15)
     city = models.CharField(max_length=150)
+    photo = models.ImageField(upload_to=pharmacy_photos_dir, default="default/default.png", null=True, blank=True)
     owner = models.ForeignKey('users.User',on_delete=models.CASCADE, null=True, blank=True, related_name="my_pharmacy")
 
     def __str__(self):
