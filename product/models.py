@@ -55,6 +55,17 @@ class Product(models.Model):
         return self.name
 
 
+class ReviewProduct(models.Model):
+    text = models.TextField()
+    rating = models.FloatField(null=True, blank=True)
+    author = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    
+    def __str__(self):
+        return self.pharmacy.name
+
+
 class CountProduct(models.Model):
     pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True, related_name="available")

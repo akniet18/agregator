@@ -73,3 +73,16 @@ class CreateReviewSer(serializers.ModelSerializer):
         model = Review
         fields = "__all__"
         read_only_fields = ('author',)
+
+
+class ReviewProductSer(serializers.ModelSerializer):
+    author = Author()
+    class Meta:
+        model = ReviewProduct
+        fields = "__all__"
+
+class CreateReviewProductSer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewProduct
+        fields = "__all__"
+        read_only_fields = ('author',)

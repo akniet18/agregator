@@ -115,6 +115,32 @@ class CreateReview(APIView):
         else:
             return Response(s.errors)
 
+    
+class ReviewProductApi(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, id):
+        queryset = ReviewProduct.objects.filter(product__id = id)
+        s = ReviewProductSer(queryset, many=True)
+        return Response(s.data)
+
+
+class CreateProductReview(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        s = CreateReviewProductSer(data=request.data)
+        if s.is_valid():
+            ReviewProduct.objects.create(
+                text = s.validated_data['text'],
+                author = request.user,
+                product = s.validated_data['product'],
+                rating = s.validated_data['rating']
+            )
+            return Response({'status': 'ok'})
+        else:
+            return Response(s.errors)
+
 
 class Recomendation(APIView):
     permission_classes = [permissions.AllowAny,]

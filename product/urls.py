@@ -12,6 +12,10 @@ urlpatterns = [
    path('accounting/', Accounting.as_view()),
    path('review/<id>', ReviewApi.as_view()),
    path('create/review/', CreateReview.as_view()),
+
+   path('review/p/<id>', ReviewProductApi.as_view()),
+   path('create/review/p/', CreateProductReview.as_view()),
+
    path('recomendation/', Recomendation.as_view()),
    path('pharmacy/', PharmacyS.as_view({'get': 'list'}))
 ]
