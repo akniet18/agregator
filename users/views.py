@@ -12,6 +12,7 @@ from django.conf import settings
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from .models import User
+import uuid
 
 
 class Register(APIView):
@@ -71,15 +72,21 @@ class changePassword(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        s = LoginSer(data=request.data)
+        s = EmailSer(data=request.data)
         if s.is_valid():
-            username = s.validated_data['username']
-            pwd = s.validated_data['password']
-            user = User.objects.get(username=username)
+            email = s.validated_data['email']
+            pwd = uuid.uuid4().hex[:10]
+            user = User.objects.filter(email=email)
             if user.exists():
                 user = user[0]
                 user.set_password(pwd)
                 user.save()
+                send_mail(
+                    'Agregator password', 
+                    f'Your password: {pwd}', 
+                    settings.EMAIL_HOST_USER,
+                    [email,], 
+                    fail_silently=False)
                 return Response({'status':'ok'})
             else:
                 return Response({'status': 'not found'})

@@ -12,6 +12,7 @@ urlpatterns = [
    path('accounting/', Accounting.as_view()),
    path('review/<id>', ReviewApi.as_view()),
    path('create/review/', CreateReview.as_view()),
-   path('recomendation/', Recomendation.as_view())
+   path('recomendation/', Recomendation.as_view()),
+   path('pharmacy/', PharmacyS.as_view({'get': 'list'}))
 ]
 # urlpatterns += router.urls

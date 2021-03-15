@@ -11,6 +11,10 @@ class RegisterSer(serializers.Serializer):
 class LoginSer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
+
+
+class EmailSer(serializers.Serializer):
+    email = serializers.CharField()
     
 
 class UserSer(serializers.ModelSerializer):

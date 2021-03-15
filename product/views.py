@@ -24,6 +24,15 @@ class getProduct(viewsets.ModelViewSet):
     filter_fields = ('category', )
     
 
+class PharmacyS(viewsets.ModelViewSet):
+    permission_classes = [permissions.AllowAny,]
+    queryset = Pharmacy.objects.all()
+    serializer_class = PharmacySer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ('name',)
+   
+
+
 class createProduct(APIView):
     permission_classes = [permissions.IsAuthenticated,]
 
