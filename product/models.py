@@ -63,7 +63,7 @@ class ReviewProduct(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
     def __str__(self):
-        return self.pharmacy.name
+        return self.product.name
 
 
 class CountProduct(models.Model):
