@@ -27,3 +27,7 @@ class UserSer(serializers.ModelSerializer):
         instance.address = validated_data.get('address', instance.address)
         instance.save()
         return instance
+
+
+class pushSerializer(serializers.Serializer):
+	reg_id = serializers.CharField()

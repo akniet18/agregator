@@ -13,6 +13,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from .models import User
 import uuid
+from push_notifications.models import APNSDevice, GCMDevice
+
 
 
 class Register(APIView):
@@ -94,3 +96,21 @@ class changePassword(APIView):
             return Response(s.errors)
 
             
+class pushRegister(APIView):
+    permission_classes = [permissions.IsAuthenticated,]
+    
+    def post(self, request):
+        s = pushSerializer(data=request.data)
+        if s.is_valid():
+            android = GCMDevice.objects.filter(user=request.user)
+            if android.exists():
+                android = GCMDevice.objects.get(user=request.user)
+                android.registration_id = s.validated_data['reg_id']
+                android.save()
+            else:
+                GCMDevice.objects.create(user=request.user, active=True,
+                                    registration_id=s.validated_data['reg_id'],
+                                    cloud_message_type="FCM")
+            return Response({'status': "ok"})
+        else:
+            return Response(s.errors)
