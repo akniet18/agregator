@@ -29,7 +29,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'django_filters'
+    'django_filters',
+    'push_notifications',
+    'huey.contrib.djhuey'
 ]
 
 APPEND_SLASH=False
@@ -148,6 +150,14 @@ EMAIL_HOST_USER = 'diplom.agregator@gmail.com'
 EMAIL_HOST_PASSWORD = 'Qwerty2020'
 EMAIL_PORT = 587
 EMAIL_USE_SSL = False
+
+
+PUSH_NOTIFICATIONS_SETTINGS = {
+    "FCM_API_KEY": "AAAArm2ERYs:APA91bFgQBDsbqYygdOcJZET953qo3aQHIBD4V8NCUuT7Ojcq361DRMdoXzWtiHuIOFe1bJAAHKBL_J3AXR4jQqgLba9QElVfr-peulQ7Da_r92p7Ib0szAo09VTSPkCjP_TUe_Eeo7h",
+    # "APNS_CERTIFICATE": "aps.pem",
+    # "APNS_TOPIC": "com.kz.ALU",
+    # 'APNS_USE_SANDBOX': False
+}
 
 
 STATIC_URL = '/static/'
