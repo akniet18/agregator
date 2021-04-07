@@ -10,7 +10,7 @@ from huey.contrib.djhuey import db_periodic_task, db_task
 def send_notifiction():    
     p = CountProduct.objects.filter(count__lte=10)
     for i in p:
-        # send_push(i.pharmacy.owner, f"У вас заканчивается запас «{i.product.name}». В текущий момент оставшееся количество : «{i.count}»")
+        send_push(i.pharmacy.owner, f"У вас заканчивается запас «{i.product.name}». В текущий момент оставшееся количество : «{i.count}»")
         print(i.product.name, i.count)
     return "ok"
     
