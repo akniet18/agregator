@@ -1,1 +1,0 @@
-web: gunicorn agregator.wsgi --log-file -
