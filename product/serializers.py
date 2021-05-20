@@ -57,6 +57,24 @@ class CountProductSer2(serializers.ModelSerializer):
         model = CountProduct
         fields = "__all__"
 
+class categorySer(serializers.Serializer):
+    name = serializers.CharField()
+    id = serializers.IntegerField()
+class ProductSer3(serializers.ModelSerializer):
+    photo = serializers.SerializerMethodField('get_avatar_url', read_only=True)
+    category = categorySer()
+    class Meta:
+        model = Product
+        fields = "__all__"
+    def get_avatar_url(self, obj):
+        return self.context['request'].build_absolute_uri(obj.photo.url)
+class CountProductSer3(serializers.ModelSerializer):
+    product = ProductSer3()
+    pahrmacy = PharmacySer()
+    class Meta:
+        model = CountProduct
+        fields = "__all__"
+
 
 class Author(serializers.Serializer):
     username = serializers.CharField()
