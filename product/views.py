@@ -86,7 +86,7 @@ class Accounting(APIView):
     def get(self, request):
         user = Pharmacy.objects.get(owner=request.user)
         queryset = CountProduct.objects.filter(pharmacy = user)
-        s = CountProductSer2(queryset, many=True, context={'request': request})
+        s = CountProductSer3(queryset, many=True, context={'request': request})
         return Response(s.data)
 
 
