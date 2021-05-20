@@ -70,7 +70,7 @@ class ProductSer3(serializers.ModelSerializer):
         return self.context['request'].build_absolute_uri(obj.photo.url)
 class CountProductSer3(serializers.ModelSerializer):
     product = ProductSer3()
-    pahrmacy = PharmacySer()
+    pharmacy = PharmacySer()
     class Meta:
         model = CountProduct
         fields = "__all__"
