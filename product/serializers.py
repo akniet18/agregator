@@ -86,3 +86,7 @@ class CreateReviewProductSer(serializers.ModelSerializer):
         model = ReviewProduct
         fields = "__all__"
         read_only_fields = ('author',)
+
+
+class productIdSer(serializers.Serializer):
+    id = serializers.IntegerField()

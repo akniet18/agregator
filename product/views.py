@@ -151,3 +151,24 @@ class Recomendation(APIView):
         random.shuffle(queryset)
         s = ProductSer(queryset, many=True, context={'request': request})
         return Response(s.data)
+
+
+class favorites(AutoPrefetchViewSetMixin,APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        queryset = request.user.favorites.all()
+        s = ProductSer(queryset, many = True, context={'request': request})
+        return Response(s.data)
+
+    def post(self, request):
+        s = productIdSer(data=request.data)
+        if s.is_valid():
+            product = Product.objects.get(id=s.validated_data['id'])
+            if product in request.user.favorites.all():
+                request.user.favorites.remove(product)
+            else:
+                request.user.favorites.add(product)
+            return Response({'status': 'ok'})
+        else:
+            return Response(s.errors)

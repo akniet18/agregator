@@ -17,6 +17,8 @@ urlpatterns = [
    path('create/review/p/', CreateProductReview.as_view()),
 
    path('recomendation/', Recomendation.as_view()),
-   path('pharmacy/', PharmacyS.as_view({'get': 'list'}))
+   path('pharmacy/', PharmacyS.as_view({'get': 'list'})),
+
+   path("favorites", favorites.as_view()),
 ]
 # urlpatterns += router.urls
