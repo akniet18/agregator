@@ -153,7 +153,7 @@ class Recomendation(APIView):
         return Response(s.data)
 
 
-class favorites(AutoPrefetchViewSetMixin,APIView):
+class favorites(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
