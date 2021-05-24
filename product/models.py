@@ -59,7 +59,7 @@ class ReviewProduct(models.Model):
     text = models.TextField()
     rating = models.FloatField(null=True, blank=True)
     author = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="review_product")
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     
     def __str__(self):

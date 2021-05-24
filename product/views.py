@@ -13,7 +13,7 @@ from rest_framework import filters
 from users.models import User
 from categories.models import Category
 from .models import *
-
+from django.db.models import Count
 
 class getProduct(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny,]
@@ -146,10 +146,8 @@ class Recomendation(APIView):
     permission_classes = [permissions.AllowAny,]
     
     def get(self, request):
-        queryset = Product.objects.all()
-        queryset = list(queryset)
-        random.shuffle(queryset)
-        s = ProductSer(queryset, many=True, context={'request': request})
+        q = Product.objects.annotate(num_comment=Count('review_product')).order_by('-num_comment')[:10]
+        s = ProductSer(q, many=True, context={'request': request})
         return Response(s.data)
 
 
