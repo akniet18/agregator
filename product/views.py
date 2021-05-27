@@ -170,3 +170,87 @@ class favorites(APIView):
             return Response({'status': 'ok'})
         else:
             return Response(s.errors)
+
+
+
+# import numpy as np
+# import pandas as pd
+# import json
+# from pandas.io.json import json_normalize
+# from rake_nltk import Rake
+# from sklearn.metrics.pairwise import cosine_similarity
+# from sklearn.feature_extraction.text import CountVectorizer
+# from sklearn.neighbors import NearestNeighbors
+# from sklearn.metrics import mean_squared_error
+# from math import sqrt
+# pd.set_option('display.max_columns', 100)
+# f = open(r'../agregator.json',encoding='UTF8')
+# data = json.load(f)
+# df = pd.io.json.json_normalize(data)
+
+def preparationData():
+    rating_df=rating_df.rename(columns={'fields.author':'authorId', 'fields.rating':'Rating', 'fields.text':'Review','fields.product':'productId'}, inplace=False)
+    rating_df=rating_df.loc[rating_df['model'] == 'product.reviewproduct']
+    desc_df=df[['model', 'pk', 'fields.name']]
+    desc_df=desc_df.loc[desc_df['model'] == 'product.product']
+    desc_df=desc_df.rename(columns={'pk':'productId', 'fields.name':'title'}, inplace=False)
+    result = pd.merge(rating_df, desc_df, on="productId", how="left")
+    result=result.drop(columns=['pk','model_x','model_y'])
+    missing_pivot = result.pivot_table(values='Rating', index='authorId', columns='title')
+    return {
+        'missing_pivot': missing_pivot,
+        'result': result
+    }
+
+
+def getRate():
+    rate={}
+    missing_pivot = preparationData()['missing_pivot']
+    rows_indexes={}
+    for i, row in missing_pivot.iterrows():
+        rows= [x for x in range(0,len(missing_pivot.columns))]
+        combine= list(zip(row.index, row.values, rows))
+        rated= [(x,z) for x,y,z in combine if str(y) !='nan']
+        index = [i[1] for i in rated]
+        row_names = [i[0] for i in rated]
+        rows_indexes[i] = index
+        rate[i] = row_names
+    return {
+        'rate': rate,
+        'rows_indexes': rows_indexes
+    }
+
+def topRecs():
+    result = preparationData()['result']
+    pivot_table = result.pivot_table(values= 'Rating', index='authorId', columns='title').fillna(0)
+    pivot_table = pivot_table.apply(np.sign)
+    n=5
+    cosine_knn = NearestNeighbors(n_neighbors=n, algorithm='brute', metric='cosine')
+    item_cosine_knn_fit = cosine_knn.fit(pivot_table.T.values)
+    item_distances, item_indices = item_cosine_knn_fit.kneighbors(pivot_table.T.values)
+
+    items_dic = {}
+    for i in range(len(pivot_table.T.index)):
+        item_idx = item_indices[i]
+        col_names = pivot_table.T.index[item_idx].tolist()
+        items_dic[pivot_table.T.index[i]] = col_names
+    topRecs = {}
+    for k,v in preparationData()['rows_indexes'].items():
+        item_idx = [j for i in item_indices[v] for j in i]
+        item_dist = [j for i in item_distances[v] for j in i]
+        combine = list(zip(item_dist,item_idx))
+        diction = {i:d for d,i in combine if i not in v}
+        zipped = list(zip(diction.keys(), diction.values()))
+        sort = sorted(zipped, key = lambda x: x[1])
+        recommendations = [(pivot_table.columns[i],d) for i,d in sort]
+        topRecs[k] = recommendations
+    return topRecs
+
+def getrecommendations(user, number_of_recs = 30):
+    print("Сіз өткенде бұрында көрген өнім: \n\n{}".format('\n'.join(rate[user])))
+    print()
+    print("Мына өнімдерді де қараңыз:\n")
+    for k,v in topRecs().items():
+        if user == k:
+            for i in v[:number_of_recs]:
+                print('{} ұқсастық: {:.4f}'.format(i[0], 1-i[1]))

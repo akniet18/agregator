@@ -10,5 +10,6 @@ urlpatterns = [
    path('login/', Login.as_view()),
    path('change/password/', changePassword.as_view()),
    path('push/register/', pushRegister.as_view()),
+    path('support', supportApi.as_view())
 ]
 urlpatterns += router.urls

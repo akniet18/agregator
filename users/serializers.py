@@ -31,3 +31,7 @@ class UserSer(serializers.ModelSerializer):
 
 class pushSerializer(serializers.Serializer):
 	reg_id = serializers.CharField()
+
+
+class supportSer(serializers.Serializer):
+    text = serializers.CharField()

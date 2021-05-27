@@ -114,3 +114,21 @@ class pushRegister(APIView):
             return Response({'status': "ok"})
         else:
             return Response(s.errors)
+
+
+class supportApi(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        s = supportSer(data=request.data)
+        if s.is_valid():
+            text = s.validated_data['text']
+            send_mail(
+                    'Agregator', 
+                    f'{text}', 
+                    settings.EMAIL_HOST_USER,
+                    [settings.EMAIL_HOST_USER,], 
+                    fail_silently=False)
+            return Response({'status': 'ok'})
+        else:
+            return Response(s.errors)

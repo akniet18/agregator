@@ -20,5 +20,7 @@ urlpatterns = [
    path('pharmacy/', PharmacyS.as_view({'get': 'list'})),
 
    path("favorites", favorites.as_view()),
+
+  
 ]
 # urlpatterns += router.urls
