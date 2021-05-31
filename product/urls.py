@@ -19,6 +19,7 @@ urlpatterns = [
 
    path('recomendation/', Recomendation.as_view()),
    path('pharmacy/', PharmacyS.as_view({'get': 'list'})),
+   path('pharmacy/get', PharmacyGet.as_view()),
 
    path("favorites", favorites.as_view()),
    path('similar/<id>', getSimilarProduct.as_view())

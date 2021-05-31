@@ -32,6 +32,15 @@ class PharmacyS(viewsets.ModelViewSet):
     search_fields = ('name',)
    
 
+class PharmacyGet(APIView):
+    permission_classes = [permissions.IsAuthenticated,]
+
+    def get(self, request):
+        queryset = Pharmacy.objects.filter(owner=request.user)
+        serializer_class = PharmacySer(queryset.first())
+        return Response(serializer_class.data)
+   
+
 
 class createProduct(APIView):
     permission_classes = [permissions.IsAuthenticated,]
