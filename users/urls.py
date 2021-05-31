@@ -11,5 +11,6 @@ urlpatterns = [
    path('change/password/', changePassword.as_view()),
    path('push/register/', pushRegister.as_view()),
    path('support', supportApi.as_view()),
+   path('push/<id>', Push.as_view())
 ]
 urlpatterns += router.urls

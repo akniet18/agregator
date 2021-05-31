@@ -132,3 +132,12 @@ class supportApi(APIView):
             return Response({'status': 'ok'})
         else:
             return Response(s.errors)
+
+
+
+class Push(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, id):
+        send_push(User.objects.get(id=id), "hello alem")
+        return Response({'status': 'ok'})
