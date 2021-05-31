@@ -79,6 +79,18 @@ class PharmacyApi(APIView):
              return Response(s.errors)
 
 
+class PharmacyCheck(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        p = Pharmacy.objects.filter(owner=request.user)
+        if p.exists():
+            return Response({'status': 'true'})
+        else:
+            return Response({'status': 'false'})
+       
+
+
 
 class Accounting(APIView):
     permission_classes = (permissions.IsAuthenticated,)
