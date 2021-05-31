@@ -9629,8 +9629,10 @@ class getSimilarProduct(APIView):
                 p = Product.objects.get(name=item(rec[1]))
                 queryset.append(p)
             last = item(rec[1])
-        for i in topRecsList[float(request.user.id)][:30]:
-            p = Product.objects.get(name=i[0])
-            queryset.append(p)
+        userlist = topRecsList[float(request.user.id)]
+        if userlist:
+            for i in userlist[:30]:
+                p = Product.objects.get(name=i[0])
+                queryset.append(p)
         s = ProductSer(queryset, many=True, context={'request': request})
         return Response(s.data)
