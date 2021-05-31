@@ -30,8 +30,8 @@ class PharmacyS(viewsets.ModelViewSet):
     serializer_class = PharmacySer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ('name',)
+    
    
-
 class PharmacyGet(APIView):
     permission_classes = [permissions.IsAuthenticated,]
 
@@ -40,7 +40,6 @@ class PharmacyGet(APIView):
         serializer_class = PharmacySer(queryset.first())
         return Response(serializer_class.data)
    
-
 
 class createProduct(APIView):
     permission_classes = [permissions.IsAuthenticated,]
