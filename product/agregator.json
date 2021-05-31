@@ -1,26 +1,6 @@
 [
     {
         "model": "users.user",
-        "pk": 1,
-        "fields": {
-            "password": "pbkdf2_sha256$216000$6fC5MT0lPV8D$0SDLJtqSLlDTQhS65hj3Rt6LfJIOktCucHuF66CwzbM=",
-            "last_login": "2021-05-25T20:14:28.142Z",
-            "is_superuser": true,
-            "username": "admin",
-            "first_name": "",
-            "last_name": "",
-            "email": "admin@mail.ru",
-            "is_staff": true,
-            "is_active": true,
-            "date_joined": "2021-03-28T15:13:28.207Z",
-            "address": "",
-            "groups": [],
-            "user_permissions": [],
-            "favorites": []
-        }
-    },
-    {
-        "model": "users.user",
         "pk": 2,
         "fields": {
             "password": "pbkdf2_sha256$216000$MCaWNBD97JgI$2NPAggmO4L6LJejQJNxHzFkSaTxKaBFrdzTjETr0SBM=",
@@ -11604,14 +11584,7 @@
             "created": "2021-03-29T15:46:51.039Z"
         }
     },
-    {
-        "model": "authtoken.token",
-        "pk": "8a2a4d9b4d61d6ba9f242c4339dc72274f497355",
-        "fields": {
-            "user": 1,
-            "created": "2021-05-20T13:12:44.860Z"
-        }
-    },
+
     {
         "model": "authtoken.token",
         "pk": "95e7448cf2c4473f209e91835aa3455721b1ea53",
