@@ -22,8 +22,7 @@ urlpatterns = [
    path('pharmacy/get', PharmacyGet.as_view()),
 
    path("favorites", favorites.as_view()),
-   path('similar/<id>', getSimilarProduct.as_view())
+   path('similar/<id>', getSimilarProduct.as_view()),
 
-  
 ]
 # urlpatterns += router.urls
