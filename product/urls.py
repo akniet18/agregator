@@ -24,5 +24,6 @@ urlpatterns = [
    path("favorites", favorites.as_view()),
    path('similar/<id>', getSimilarProduct.as_view()),
 
+   path('test', test.as_view()),
 ]
 # urlpatterns += router.urls

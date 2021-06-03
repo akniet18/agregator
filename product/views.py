@@ -28,6 +28,8 @@ pd.set_option('display.max_columns', 100)
 from sklearn.metrics.pairwise import cosine_similarity
 import operator
 import statistics
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel 
 
 class getProduct(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny,]
@@ -219,7 +221,7 @@ def preparationData():
     pdf1=pdf1.rename(columns={'id':'productId'}, inplace=False)
     pdf2=pdf2.rename(columns={'product_id':'productId'}, inplace=False)
     result = pd.merge(pdf1, pdf2, on="productId", how="left")
-    result=result.drop(columns=['composition','category_id','created_date', 'photo', 'description', 'id', 'manufacturer_id'])
+    result=result.drop(columns=['composition','category_id','created_date', 'photo', 'id', 'manufacturer_id'])
     missing_pivot = result.pivot_table(values='rating', index='author_id', columns='name')
     return {
       'rating_df': pdf2,
@@ -369,3 +371,27 @@ class getSimilarProduct(APIView):
             queryset.append(p)
         s = ProductSer(queryset, many=True, context={'request': request})
         return Response(s.data)
+
+
+def item(id, result):  
+    return result.loc[result['productId'] == id]['name'].tolist()[0].split(' - ')[0] 
+
+class test(APIView):
+  permission_classes = (permissions.IsAuthenticated,)
+
+  def get(self, request):
+    a = preparationData()
+    result = a['result']
+    tf = TfidfVectorizer(analyzer='word', ngram_range=(1, 3), min_df=0)
+    tfidf_matrix = tf.fit_transform(result['description'])
+    cosine_similarities = linear_kernel(tfidf_matrix, tfidf_matrix) 
+    results = {}
+    for idx, row in result.iterrows():
+        uksas_index = cosine_similarities[idx].argsort()[:-100:-1] 
+        uksas_onim = [(cosine_similarities[idx][i], result['productId'][i]) for i in uksas_index] 
+        results[row['productId']] = uksas_onim[1:]
+    recs = results[7][:8]  
+    
+    for rec in recs:
+      nm = item(rec[1], result)
+    return Response({'status': 'ok'})
