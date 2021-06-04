@@ -55,7 +55,7 @@ class Login(APIView):
                     token = Token.objects.get(user=user)
                 else:
                     token = Token.objects.create(user=user)
-                return Response({'key': token.key, 'uid': user.pk})
+                return Response({'key': token.key, 'uid': user.pk, 'is_staff': user.is_staff})
             else:
                 return Response({'status': 'wrong'})
         else:
