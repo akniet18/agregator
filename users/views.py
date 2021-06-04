@@ -69,6 +69,12 @@ class UserList(viewsets.ModelViewSet):
     queryset = User.objects.filter(is_superuser=False, is_staff=False)
 
 
+class UserListApi(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserSer
+    queryset = User.objects.filter(is_superuser=False, is_staff=False, my_pharmacy__isnull=True)
+
+
 
 class changePassword(APIView):
     permission_classes = (permissions.AllowAny,)
