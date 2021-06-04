@@ -26,5 +26,6 @@ urlpatterns = [
    path('similar/<id>', getSimilarProduct.as_view()),
 
    path('test', test.as_view()),
+   path('create/pharmacy', pharmacyCreateApi.as_view())
 ]
 # urlpatterns += router.urls
