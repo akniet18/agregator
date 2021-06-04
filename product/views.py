@@ -126,6 +126,16 @@ class Accounting(APIView):
         return Response(s.data)
 
 
+class AccountingApi(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, id):
+        user = Pharmacy.objects.get(id=id)
+        queryset = CountProduct.objects.filter(pharmacy = user)
+        s = CountProductSer3(queryset, many=True, context={'request': request})
+        return Response(s.data)
+
+
 class ReviewApi(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
