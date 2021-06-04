@@ -47,6 +47,8 @@ class PharmacyS(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ('name',)
     
+
+    
    
 class PharmacyGet(APIView):
     permission_classes = [permissions.IsAuthenticated,]
@@ -82,6 +84,24 @@ class createProduct(APIView):
             return Response(s.errors)
 
 
+class pharmacyCreateApi(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        s = PharmacySerCreate(data=request.data)
+        if s.is_valid():
+            p = Pharmacy.objects.create(
+                name = s.validated_data['name'],
+                owner = s.validated_data['owner'],
+                address = s.validated_data['address'],
+                working_hours = s.validated_data['working_hours'],
+                city = s.validated_data['city'],
+                phone = s.validated_data['phone'],
+                photo = s.validated_data.get('photo', None)
+            )
+            return Response({'status': 'ok'})
+        else:
+             return Response(s.errors)
 
 class PharmacyApi(APIView):
     permission_classes = (permissions.IsAuthenticated,)

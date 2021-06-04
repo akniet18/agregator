@@ -9,6 +9,12 @@ class PharmacySer(serializers.ModelSerializer):
         read_only_fields = ("owner",)
 
 
+class PharmacySerCreate(serializers.ModelSerializer):
+    class Meta:
+        model = Pharmacy
+        fields = "__all__"
+
+
 class CountProductSer(serializers.ModelSerializer):
     pharmacy = PharmacySer()
     class Meta:
