@@ -12,6 +12,6 @@ urlpatterns = [
    path('push/register/', pushRegister.as_view()),
    path('support', supportApi.as_view()),
    path('push/<id>', Push.as_view()),
-   path('/', UserListApi.as_view({'get': 'list'}))
+   path('', UserListApi.as_view({'get': 'list'}))
 ]
 urlpatterns += router.urls
